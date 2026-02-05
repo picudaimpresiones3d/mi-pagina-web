@@ -96,11 +96,36 @@ contacto.html
     </section>
     <footer>
     </footer>
+    <!-- Incluir EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
+        // Inicializar EmailJS con tu User ID
+        emailjs.init('YOUR_USER_ID');  // Reemplaza con tu User ID de EmailJS
+
         document.getElementById('contactForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            alert('Gracias por tu mensaje. Te contactaremos pronto.');
-            // En una versión real, aquí iría código para enviar el formulario a un servidor.
+
+            // Obtener los valores del formulario
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            // Parámetros para enviar el email
+            const templateParams = {
+                from_name: name,
+                from_email: email,
+                message: message
+            };
+
+            // Enviar el email usando EmailJS
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)  // Reemplaza con tus Service ID y Template ID
+                .then(function(response) {
+                    alert('Mensaje enviado exitosamente. Te contactaremos pronto.');
+                    document.getElementById('contactForm').reset();  // Limpiar el formulario
+                }, function(error) {
+                    alert('Error al enviar el mensaje. Inténtalo de nuevo.');
+                    console.error('Error:', error);
+                });
         });
     </script>
 </body>
